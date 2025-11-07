@@ -1,0 +1,1 @@
+# School-practical-programming-task
