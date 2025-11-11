@@ -14,3 +14,5 @@ STAFF_OPTIONS_MENU = """Select an option:
 5. Remove a Pet
 6. Logout
 Enter your option (1-5)..."""
+
+AVAILABE_PETS_PAGE

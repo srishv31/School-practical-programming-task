@@ -27,9 +27,25 @@ class UI:
         self.clearscreen()
 
         match option:
+            case "1":
+                self.display_current_menu = self.DisplayAvailablePetsPage
+            case "2":
+                self.display_current_menu = self.DisplayRegisterAsAdopterPage
+            case "3":
+                self.display_current_menu = self.DisplayAdopterLoginPage
             case "4":
                 self.display_current_menu = self.DisplayStaffMenu
+            case "5":
+                self.running = False
     
+    def DisplayAvailablePetsPage(self):
+        print("View available pets")
+
+    def DisplayRegisterAsAdopterPage(self):
+        print("Register Adopter page")
+
+    def DisplayAdopterLoginPage(self):
+        print("Adopter Login")
 
     def DisplayStaffMenu(self):
         PASSWORD = "password123"
@@ -44,8 +60,6 @@ class UI:
     def DisplayStaffOptionsMenu(self):
         print(UIText.STAFF_OPTIONS_MENU)
         option = input()
-
-class Menu:
     
 
         

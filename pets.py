@@ -35,6 +35,8 @@ class Pet:
 				petData[7],
 				int(petData[8]),
 				petData[0])
+	@classmethod
+	def ViewAvailabelPets
 
 if __name__ == "__main__":
 	PETS_FILE_NAME = "pets.csv"
