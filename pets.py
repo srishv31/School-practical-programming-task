@@ -1,8 +1,9 @@
 import sys
+import pandas as pd
 
 class Pet:
 	petCount = 0
-	pets = {}
+	pets = pd.DataFrame()
 
 	def __init__(self, name, petType, age, size, energy, fee, status, daysInCentre, petID = None):
 		if petID == None:
@@ -20,24 +21,19 @@ class Pet:
 	
 	@classmethod
 	def AddPetsFromCSV(self, fileName):
-		lines = []
-		with open(fileName) as file:
-			lines = file.readlines()
-		for line in lines:
-			petData = line.split(",")
-			self.pets[petData[0]] = Pet(
-				petData[1],
-				petData[2],
-				int(petData[3]),
-				petData[4],
-				petData[5],
-				int(petData[6]),
-				petData[7],
-				int(petData[8]),
-				petData[0])
+		self.pets = pd.read_csv(fileName)
+		self.pets.columns = ["Pet ID", "Name", "Type", "Age", "Size", "Energy", "Fee", "Status", "DaysInCentre"]
+		print(self.pets.head)
+		
 	@classmethod
-	def ViewAvailabelPets
+	def ViewAvailabelPets(self):
+		temppets = self.pets
+		temppets.sort_values(by="DaysInCentre", ascending=False)
+		temppets = temppets[temppets["Status"] == "Available"]
+		print(temppets)
+			
 
 if __name__ == "__main__":
 	PETS_FILE_NAME = "pets.csv"
 	Pet.AddPetsFromCSV(PETS_FILE_NAME)
+	Pet.ViewAvailabelPets()

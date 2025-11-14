@@ -62,5 +62,5 @@ class UI:
         option = input()
     
 
-        
-UI()
+if __name__ == "__main__":
+    ui = UI()

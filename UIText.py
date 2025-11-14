@@ -15,4 +15,3 @@ STAFF_OPTIONS_MENU = """Select an option:
 6. Logout
 Enter your option (1-5)..."""
 
-AVAILABE_PETS_PAGE
