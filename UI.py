@@ -2,6 +2,8 @@ import os
 import abc
 import UIText
 
+import pets
+
 class UI:
     def __init__(self):
         os.system("clear")
@@ -39,10 +41,12 @@ class UI:
                 self.running = False
     
     def DisplayAvailablePetsPage(self):
-        print("View available pets")
+        petstext = pets.Pet.ViewAvailablePets()
+        self.display_current_menu = self.DisplayMainMenu
+        input("Press enter to continue...")
 
     def DisplayRegisterAsAdopterPage(self):
-        print("Register Adopter page")
+        
 
     def DisplayAdopterLoginPage(self):
         print("Adopter Login")
