@@ -3,6 +3,7 @@ import abc
 import UIText
 
 import pets
+import adopter
 
 class UI:
     def __init__(self):
@@ -46,7 +47,15 @@ class UI:
         input("Press enter to continue...")
 
     def DisplayRegisterAsAdopterPage(self):
-        
+        fullName = input("Full Name: ")
+        homeType = input("Home Type: ")
+        experienceLevel = input("Experience Level: ")
+        preferredPetSize = input("Preferred Pet Size: ")
+        preferredEnergyLevel = input("Preferred Energy Level: ")
+        adopter.Adopter.RegisterNewAdopter(fullName, homeType, experienceLevel, preferredPetSize, preferredEnergyLevel)
+        print(adopter.Adopter.adopters)
+        input()
+        self.display_current_menu = self.DisplayMainMenu
 
     def DisplayAdopterLoginPage(self):
         print("Adopter Login")
