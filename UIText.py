@@ -6,6 +6,14 @@ MAIN_MENU = """Select an option:
 5. Quit
 Enter your option (1-5)..."""
 
+ADOPTER_OPTIONS_MENU = """Select an option:
+1. View My Compatibility Matches
+2. Reserve a Pet
+3. View My Reserved/Adopted Pets
+4. Cancel a Reservation
+5. Logout
+"""
+
 STAFF_OPTIONS_MENU = """Select an option:
 1. Add New Pet
 2. Complete an Adoption

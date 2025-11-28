@@ -1,2 +1,2 @@
 # School-practical-programming-task
-work on 3 - Register new adoptter
+line 42 adopters.py
