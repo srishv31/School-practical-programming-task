@@ -40,6 +40,43 @@ class Adopter:
                                 "Adopted Pets" : "none"}
         return id
 
+    @classmethod
+    def HasReservedPet(self, adopterID):
+        adopter = self.adopters.loc[adopterID]
+        adoptedPets = adopter["Adopted Pets"]
+
+        if adoptedPets == "none": return False
+
+        for petID in adoptedPets.split(";"):
+            pet = pets.Pet.pets.loc[petID]
+            if pet["Status"] == "Reserved": return True
+        return False
+
+    @classmethod
+    def ReservePet(self, adopterID, petID):
+        if not pets.Pet.ValidatePetID(petID):
+            return False
+        pets.Pet.SetPetToReserved(petID)
+        adopter = self.adopters.loc[adopterID]
+        if adopter["Adopted Pets"] == "none":
+            adopter["Adopted Pets"] = petID
+        else:
+            adopter["Adopted Pets"] += ";" + petID
+        return True
+
+    @classmethod
+    def DisplayReservedAdoptedPets(self, adopterID):
+        adopter = self.adopters.loc[adopterID]
+        adoptedPets = adopter["Adopted Pets"]
+        if adoptedPets == "none":
+            print("You haven't reserved or adopted any pets yet.")
+            return False
+        for petID in adoptedPets.split(";"):
+            petData = pets.Pet.pets.loc[petID]
+            print(f"Name: {petData["Name"]}\nType: {petData["Type"]}\nAge: {petData["Age"]}\nStatus: {petData["Status"]}{"Ready to finalise adoption." if (petData["Status"] == "Reserved") else ""}\n")
+        return True
+
+
     # @classmethod
     # def GetCompatibilityScore(self, adopterID, petID):
     #     adopter = 

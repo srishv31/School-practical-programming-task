@@ -1,8 +1,10 @@
 # School-practical-programming-task
 
-line 138 UI.py
+line 131 UI.py
 
 line 42 adopters.py
+
+finsh Pet Reservation
 
 fix unreadable None - gets read as NaN|||||||||||||||||||
 

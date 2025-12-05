@@ -11,6 +11,8 @@ class UI:
         self.display_current_menu = self.DisplayMainMenu
         self.DisplayMainMenu()
 
+        self.signed_in_adopter_id = None
+
         # Main Loop
         self.running = True
         while self.running:
@@ -74,12 +76,13 @@ class UI:
             input("Press enter to return to main menu...")
             return
         
+        self.signed_in_adopter_id = adopterID
         self.display_current_menu = self.DisplayAdopterMenu
         print("Login successful.")
         input("Press enter to continue...")
     
     def DisplayAdopterMenu(self):
-        print(UIText.STAFF_OPTIONS_MENU)
+        print(UIText.ADOPTER_OPTIONS_MENU)
         
         option = input()
         self.clearscreen()
@@ -88,16 +91,45 @@ class UI:
             case "1":
                 self.display_current_menu = self.DisplayCompatibilityMatchesPage
             case "2":
-                self.display_current_menu = self.DisplayRegisterAsAdopterPage
+                self.display_current_menu = self.DisplayReservePetPage
             case "3":
-                self.display_current_menu = self.DisplayAdopterLoginPage
+                self.display_current_menu = self.DisplayAdoptedReservedPets
             case "4":
-                self.display_current_menu = self.DisplayStaffMenu
+                self.display_current_menu = self.DisplayCancelReservationPage
             case "5":
-                self.running = False
+                self.signed_in_adopter_id = None
+                self.display_current_menu = self.DisplayMainMenu
 
     def DisplayCompatibilityMatchesPage(self):
         print("Compatibility Page")
+
+    def DisplayReservePetPage(self):
+        print("Reserve A Pet")
+        if adopter.Adopter.HasReservedPet(self.signed_in_adopter_id):
+            print("You already have a reservation. Please complete or cancel it first.")
+            self.display_current_menu = self.DisplayAdopterMenu
+            return
+
+        petID = input("Pet ID to reserve: ")
+        if not adopter.Adopter.ReservePet(self.signed_in_adopter_id, petID):
+            print("Failed to reserve. Invalid Pet ID.")
+        else:
+            print("Reservation successful.")
+        input("Press enter to return to adopter menu...")
+        self.display_current_menu = self.DisplayAdopterMenu
+
+    
+    def DisplayAdoptedReservedPets(self):
+        adopter.Adopter.DisplayReservedAdoptedPets(self.signed_in_adopter_id)
+        input("Press enter to return to adopter menu...")
+        self.display_current_menu = self.DisplayAdopterMenu
+    
+    def DisplayCancelReservationPage(self):
+        if adopter.Adopter.HasReservedPet():
+            confirm = input("Would you like to cancel your current reservation?(y/n) ") == "y"
+            if confirm:
+                ado
+
 
     def DisplayStaffMenu(self):
         PASSWORD = "pawsadopt2024"
@@ -131,12 +163,25 @@ class UI:
                 self.running = False
     
     def DisplayAddNewPetPage(self):
-        name = input("Pet Name: ")
-        type = input("Pet Type: ")
-        age = input("Pet Age in years: ")
-        size = input("Pet Size: ")
-        energy = 
+        while True:
+            name = input("Pet Name: ")
+            type = input("Pet Type: ")
+            age = input("Pet Age in years: ")
+            size = input("Pet Size: ")
+            energy = input("Energy Level: ")
+            adoptionFee = input("Adoption Fee: £")
+            if pets.Pet.ValidatePetRegistrationInputs(name, type, age, size, energy, adoptionFee):
+                break
+            else:
+                print("Invalid Input")
+                input("Press enter to return to main menu...")
+                self.display_current_menu = self.DisplayMainMenu
+                return
 
+        id = pets.Pet.RegisterNewPet(name, type, age, size, energy, adoptionFee)
+        print(f"Pet registered with id {id}.")
+        input("Press enter to return to main menu...")
+        self.display_current_menu = self.DisplayMainMenu
 
     def DisplayCompleteAnAdoptionPage(self):
         print("Complete and Adoption")

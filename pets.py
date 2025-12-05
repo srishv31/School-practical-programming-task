@@ -14,6 +14,10 @@ class Pet:
 		id =  "P" + "0" * (3 - len(str(num))) + str(num)
 		return id
 
+	@classmethod
+	def ValidatePetID(self, petID):
+		return petID in self.pets.index
+
 	@staticmethod
 	def ValidatePetRegistrationInputs(name, type, age, size, energy, adoptionFee):
 		if not name: return False
@@ -35,9 +39,9 @@ class Pet:
                                 "Age" : age,
                                 "Size" : size,
                                 "Energy" : energy,
-                                "Adoption Fee" : adoptionFee,
+                                "Fee" : adoptionFee,
 								"Status": "Available",
-								"Days in Centre": "0"}
+								"Days In Centre": 0}
 		return id
 
 	@classmethod
@@ -61,7 +65,10 @@ class Pet:
 			print(f"\n\nAverage Days In Centre: {avg_days_in_centre:.1f} days\n")
 
 		print()
-			
+	
+	@classmethod
+	def SetPetToReserved(self, petID):
+		self.pets.loc[petID]["Status"] = "Reserved"
 
 PETS_FILE_NAME = "pets.csv"
 Pet.AddPetsFromCSV(PETS_FILE_NAME)
