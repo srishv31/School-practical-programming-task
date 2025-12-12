@@ -125,10 +125,14 @@ class UI:
         self.display_current_menu = self.DisplayAdopterMenu
     
     def DisplayCancelReservationPage(self):
-        if adopter.Adopter.HasReservedPet():
+        print(f"You have currently reserved pet with ID {adopter.Adopter.HasReservedPet(self.signed_in_adopter_id)}.")
+        if adopter.Adopter.HasReservedPet(self.signed_in_adopter_id):
             confirm = input("Would you like to cancel your current reservation?(y/n) ") == "y"
             if confirm:
-                ado
+                adopter.Adopter.RemoveReservation(self.signed_in_adopter_id, adopter.Adopter.HasReservedPet(self.signed_in_adopter_id))
+        print("Reservation Cancelled.")
+        input("Press enter to return to adopter menu...")
+        self.display_current_menu = self.DisplayAdopterMenu
 
 
     def DisplayStaffMenu(self):
@@ -187,10 +191,52 @@ class UI:
         print("Complete and Adoption")
     
     def DisplayViewPetsPage(self):
-        print("View all pets")
+        nReserved = 0
+        nAdopted = 0
+        nAvailable = 0
+        nTotal = 0
+        for petID, petData in pets.Pet.pets.iterrows():
+            nTotal += 1
+            match petData["Status"]:
+                case "Adopted": nAdopted += 1
+                case "Reserved": nReserved += 1
+                case "Availabe": nAvailable += 1
+            print(f"Name: {petData["Name"]}\nType: {petData["Type"]}\nAge: {petData["Age"]}\nStatus: {petData["Status"]}\n")
+        print("Number of pets: {nTotal}")
+        print("Number of adopted pets: {nAdopted}")
+        print("Number of reserved pets: {nReserved}")
+        print("Number of available pets: {nAvailable}")
+        return True
+
     
     def DisplayViewStatisticsPage(self):
-        print("View Statistics")
+        nDogs = 0
+        nCats = 0
+        nRabbits = 0
+        nHamsters = 0
+        nAdopted = 0
+        nAdoptedWait = 0
+        for petID, petData in pets.Pet.pets.iterrows():
+            match petData["Type"]:
+                case "Dog": nDog += 1
+                case "Cat": nCat += 1
+                case "Rabbit": nRabbit += 1
+                case "Hamster": nHamster += 1
+            if petData["Status"] == "Adopted":
+                nAdopted += 1
+                nAdoptedWait += int(petData["Days In Centre"])
+        print(f"Number of dogs: {nDogs}")
+        print(f"Number of cats: {nCats}")
+        print(f"Number of rabbits: {nRabbits}")
+        print(f"Number of hamsters: {nHamsters}")
+        pets = ["dogs", "cats", "rabbits", "hamsters"]
+        nPets = [nDogs, nCats, nRabbits, nHamsters]
+        print(f"The most common pet type is {pets[nPets.index(max(nPets))]}.")
+        print()
+
+        print(f"Number of adopted pets : {nAdopted}")
+        print(f"Average wait length: {nAdoptedWait / nAdopted}")
+
     
     def DisplayRemovePetPage(self):
         print("Remove a Pet")

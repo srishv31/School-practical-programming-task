@@ -49,7 +49,7 @@ class Adopter:
 
         for petID in adoptedPets.split(";"):
             pet = pets.Pet.pets.loc[petID]
-            if pet["Status"] == "Reserved": return True
+            if pet["Status"] == "Reserved": return petID
         return False
 
     @classmethod
@@ -73,13 +73,18 @@ class Adopter:
             return False
         for petID in adoptedPets.split(";"):
             petData = pets.Pet.pets.loc[petID]
-            print(f"Name: {petData["Name"]}\nType: {petData["Type"]}\nAge: {petData["Age"]}\nStatus: {petData["Status"]}{"Ready to finalise adoption." if (petData["Status"] == "Reserved") else ""}\n")
+            print(f"Name: {petData["Name"]}\nType: {petData["Type"]}\nAge: {petData["Age"]}\nStatus: {petData["Status"]}{"\nReady to finalise adoption." if (petData["Status"] == "Reserved") else ""}\n")
         return True
 
-
-    # @classmethod
-    # def GetCompatibilityScore(self, adopterID, petID):
-    #     adopter = 
+    @classmethod
+    def RemoveReservation(self, adopterID, petID):
+        adopter = self.adopters.loc[adopterID]
+        reserved = adopter["Adopted Pets"]
+        reservedList = reserved.split(";")
+        reservedList.pop(reservedList.index(petID))
+        reserved = ";".join(reservedList)
+        adopter["Adopted Pets"] = reserved if len(reservedList) else "none"
+        return True
 
 ADOPTERS_FILE_NAME = "adopters.csv"
 Adopter.AddAdoptersFromCSV(ADOPTERS_FILE_NAME)
