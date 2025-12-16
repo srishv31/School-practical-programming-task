@@ -208,34 +208,70 @@ class UI:
         print("Number of available pets: {nAvailable}")
         return True
 
-    
     def DisplayViewStatisticsPage(self):
         nDogs = 0
         nCats = 0
         nRabbits = 0
         nHamsters = 0
         nAdopted = 0
+        nAvailable = 0
         nAdoptedWait = 0
+        longest = 0
+        longestName = None
+        totalIncome = 0
         for petID, petData in pets.Pet.pets.iterrows():
             match petData["Type"]:
-                case "Dog": nDog += 1
-                case "Cat": nCat += 1
-                case "Rabbit": nRabbit += 1
-                case "Hamster": nHamster += 1
+                case "Dog": nDogs += 1
+                case "Cat": nCats += 1
+                case "Rabbit": nRabbits += 1
+                case "Hamster": nHamsters += 1
             if petData["Status"] == "Adopted":
                 nAdopted += 1
                 nAdoptedWait += int(petData["Days In Centre"])
+            elif petData["Status"] == "Available":
+                totalIncome += int(petData["Fee"])
+                nAvailable += 1
+            wait = int(petData["Days In Centre"])
+            if wait > longest:
+                longest = wait
+                longestName = petData["Name"]
         print(f"Number of dogs: {nDogs}")
         print(f"Number of cats: {nCats}")
         print(f"Number of rabbits: {nRabbits}")
         print(f"Number of hamsters: {nHamsters}")
-        pets = ["dogs", "cats", "rabbits", "hamsters"]
+        petTypes = ["dogs", "cats", "rabbits", "hamsters"]
         nPets = [nDogs, nCats, nRabbits, nHamsters]
-        print(f"The most common pet type is {pets[nPets.index(max(nPets))]}.")
+        print(f"The most common pet type is {petTypes[nPets.index(max(nPets))]}.")
         print()
 
         print(f"Number of adopted pets : {nAdopted}")
         print(f"Average wait length: {nAdoptedWait / nAdopted}")
+        print(f"The longest waiting pet is {longestName} who has been waiting for {longest} days")
+        print()
+
+        print(f"Total Fees: {totalIncome}")
+        print(f"Average Fee: {totalIncome / nAvailable}")
+        print()
+
+        nAdopters = 0
+        nAdoptersWithAdoption = 0
+        highestLevel = 0
+        levels = ["none", "Some", "Expert"]
+        for adopterID,  adopterData in adopter.Adopter.adopters.iterrows():
+            nAdopters += 1
+            if adopterData["Adopted Pets"] != "none":
+                nAdoptersWithAdoption += 1
+            level = levels.index(adopterData["Experience"])
+            highestLevel = max(level, highestLevel)
+
+        print(f"Number of registered adopters: {nAdopters}")
+        print(f"Number of adopters with completed adoptions: {nAdoptersWithAdoption}")
+        print(f"Highest adopter experience: {levels[highestLevel]}")
+        print()
+
+        input("Press enter to return to staff menu...")
+        self.display_current_menu = self.DisplayStaffOptionsMenu
+        return
 
     
     def DisplayRemovePetPage(self):
